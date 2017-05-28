@@ -12,6 +12,36 @@ app.get('/', function(req, res){
         res.end(data);
     });
 });
+app.get('/board.html', function(req, res){
+    fs.readFile('board.html', function(error,data){
+        res.writeHead(200, {'Content-Type':'text/html'})
+        res.end(data);
+    });
+});
+app.get('/admin.html', function(req, res){
+    fs.readFile('admin.html', function(error,data){
+        res.writeHead(200, {'Content-Type':'text/html'})
+        res.end(data);
+    });
+});
+app.get('/login.html', function(req, res){
+    fs.readFile('login.html', function(error,data){
+        res.writeHead(200, {'Content-Type':'text/html'})
+        res.end(data);
+    });
+});
+app.get('/profile.html', function(req, res){
+    fs.readFile('profile.html', function(error,data){
+        res.writeHead(200, {'Content-Type':'text/html'})
+        res.end(data);
+    });
+});
+app.get('/QnA.html', function(req, res){
+    fs.readFile('QnA.html', function(error,data){
+        res.writeHead(200, {'Content-Type':'text/html'})
+        res.end(data);
+    });
+});
 
 app.listen(PORT, function(){
     console.log("server Start.")
