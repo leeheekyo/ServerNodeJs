@@ -1,3 +1,5 @@
+var PORT = process.env.PORT || 3000;
+
 var express = require('express');
 var fs = require("fs");
 var app = express();
@@ -27,7 +29,7 @@ app.set('view engine', 'ejs');
 app.engine('html', require('ejs').renderFile);
 
 
-var server = app.listen(3000, function(){
+var server = app.listen(PORT, function(){
  console.log("Express server has started on port 3000")
 });
 
