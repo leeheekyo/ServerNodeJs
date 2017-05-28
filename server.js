@@ -1,8 +1,26 @@
 var express = require('express');
+var fs = require("fs");
+var app = express();
+
+var PORT = process.env.PORT||3000;
+
+app.get('/', function(req, res){
+    fs.readFile('main.html', function(error,data){
+        res.writeHead(200, {'Content-Type':'text/html'})
+        res.end(data);
+    });
+});
+
+app.listen(PORT, function(){
+    console.log("server Start.")
+});
+
+/*
+var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var session = require('express-session');
-var fs = require("fs")
+var fs = require("fs");
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
@@ -28,3 +46,4 @@ app.use(session({
 
 // ./router/main.js 파일의 module.exports한 routing 정보를 router 변수에 담는다.
 var router = require('./router/main')(app, fs);
+*/
