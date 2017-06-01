@@ -3,6 +3,7 @@
 <head>
   <title>Kyo World</title>
   <meta charset="utf-8">
+  <meta Content-type="application/json">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -79,10 +80,10 @@
     <div class="col-sm-8 text-left"> 
       <h1>공지사항 추가</h1>
       <hr>
-<form>
+<form action='board_add_ok' method='POST'>
     <div class="form-group">
       <label for="title">Title:</label>
-      <input type="text" class="form-control" id="email" placeholder="Title Text">
+      <input type="text" class="form-control" id="title" placeholder="Title Text">
     </div>
     <div class="form-group">
       <label for="body">Body:</label>
