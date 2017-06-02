@@ -23,12 +23,24 @@ var Db = require('mongodb').Db,
     //BSON = require('mongodb').pure().BSON,
     assert = require('assert');
 
-var db = new Db('local', new Server('localhost', 27017));
-db.open(function(err, db) {
-  if(err) console.log(err);
-  else console.log("db open");
+//ds161001.mlab.com:61001/kyo
+//var db = new Db('local', new Server('localhost', 27017));
+//db.open(function(err, db) {
+//  if(err) console.log(err);
+//  else console.log("db open");
+//})
 
-})
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://user:1234@ds161001.mlab.com:61001/kyo');
+var db = mongoose.connection;
+db.once("open",function(){
+	console.log("DB connected!");
+});
+
+db.on("error",function(err){
+	console.log("DB ERROR : ", err);
+});
+
 
 app.get('/', function(req, res){
     fs.readFile('main.html', function(error,data){
