@@ -23,45 +23,45 @@ var Db = require('mongodb').Db,
     //BSON = require('mongodb').pure().BSON,
     assert = require('assert');
 
-//ds161001.mlab.com:61001/kyo
-//var db = new Db('local', new Server('localhost', 27017));
-//db.open(function(err, db) {
-//  if(err) console.log(err);
-//  else console.log("db open");
-//})
+////ds161001.mlab.com:61001/kyo
+var db = new Db('local', new Server('localhost', 27017));
+db.open(function(err, db) {
+  if(err) console.log(err);
+  else console.log("db open");
+})
 
+/*
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://user:1234@ds161001.mlab.com:61001/kyo');
 var db = mongoose.connection;
 db.once("open",function(){
 	console.log("DB connected!");
 });
-
 db.on("error",function(err){
 	console.log("DB ERROR : ", err);
 });
-
+*/
 
 app.get('/', function(req, res){
-    fs.readFile('main.html', function(error,data){
+    fs.readFile('views/main.html', function(error,data){
         res.writeHead(200, {'Content-Type':'text/html'})
         res.end(data);
     });
 });
 app.get('/main.html', function(req, res){
-    fs.readFile('main.html', function(error,data){
+    fs.readFile('views/main.html', function(error,data){
         res.writeHead(200, {'Content-Type':'text/html'})
         res.end(data);
     });
 });
 app.get('/board_add.html', function(req, res){
-    fs.readFile('board_add.html', function(error,data){
+    fs.readFile('views/board_add.html', function(error,data){
         res.writeHead(200, {'Content-Type':'text/html'})
         res.end(data);
     });
 });
 app.get('/board.html', function(req, res){
-    fs.readFile('board_before.html', function(error,data_before){
+    fs.readFile('views/board_before.html', function(error,data_before){
         res.writeHead(200, {'Content-Type':'text/html'})
         
         //find DB and show
@@ -94,13 +94,13 @@ app.get('/board.html', function(req, res){
     });
 });
 app.get('/QnA_add.html', function(req, res){
-    fs.readFile('QnA_add.html', function(error,data){
+    fs.readFile('views/QnA_add.html', function(error,data){
         res.writeHead(200, {'Content-Type':'text/html'})
         res.end(data);
     });
 });
 app.get('/QnA.html', function(req, res){
-    fs.readFile('QnA_before.html', function(error,data_before){
+    fs.readFile('views/QnA_before.html', function(error,data_before){
         res.writeHead(200, {'Content-Type':'text/html'})
         
         //find DB and show.
@@ -124,25 +124,25 @@ app.get('/QnA.html', function(req, res){
     });
 });
 app.get('/admin.html', function(req, res){
-    fs.readFile('admin.html', function(error,data){
+    fs.readFile('views/admin.html', function(error,data){
         res.writeHead(200, {'Content-Type':'text/html'})
         res.end(data);
     });
 });
 app.get('/login.html', function(req, res){
-    fs.readFile('login.html', function(error,data){
+    fs.readFile('views/login.html', function(error,data){
         res.writeHead(200, {'Content-Type':'text/html'})
         res.end(data);
     });
 });
 app.get('/profile.html', function(req, res){
-    fs.readFile('profile.html', function(error,data){
+    fs.readFile('views/profile.html', function(error,data){
         res.writeHead(200, {'Content-Type':'text/html'})
         res.end(data);
     });
 });
 app.get('/QnA.html', function(req, res){
-    fs.readFile('QnA.html', function(error,data){
+    fs.readFile('views/QnA.html', function(error,data){
         res.writeHead(200, {'Content-Type':'text/html'})
         res.end(data);
     });
