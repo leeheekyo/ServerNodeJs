@@ -32,6 +32,12 @@ module.exports = function(app, fs)
          })
      });
 
+     app.get('/QnA',function(req,res){
+         res.render('QnA', {
+             length: 10
+         })
+     });
+
 
 /*
     app.get('/list', function (req, res) {
