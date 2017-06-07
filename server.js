@@ -3,8 +3,19 @@ var app = express();
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var fs = require("fs");
-var mongoose = require('mongoose');
 var PORT = process.env.PORT || 3000;
+
+
+var mongoose = require('mongoose');
+
+mongoose.connect('mongodb://admin:admin@ds161001.mlab.com:61001/kyo');
+var db = mongoose.connection;
+db.once("open",function(){
+	console.log("DB connected!");
+});
+db.on("error",function(err){
+	console.log("DB ERROR : ", err);
+});
 
 /*
 var querystring = require('querystring');
