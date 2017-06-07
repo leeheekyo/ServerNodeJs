@@ -24,13 +24,13 @@ var Db = require('mongodb').Db,
     assert = require('assert');
 
 ////ds161001.mlab.com:61001/kyo
-var db = new Db('local', new Server('localhost', 27017));
+/*var db = new Db('local', new Server('localhost', 27017));
 db.open(function(err, db) {
   if(err) console.log(err);
   else console.log("db open");
-})
+})*/
 
-/*
+
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://user:1234@ds161001.mlab.com:61001/kyo');
 var db = mongoose.connection;
@@ -40,7 +40,7 @@ db.once("open",function(){
 db.on("error",function(err){
 	console.log("DB ERROR : ", err);
 });
-*/
+
 
 app.get('/', function(req, res){
     fs.readFile('views/main.html', function(error,data){

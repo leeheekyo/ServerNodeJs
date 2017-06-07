@@ -1,0 +1,31 @@
+{
+  "name": "web",
+  "version": "1.0.0",
+  "description": "web",
+  "main": "app.js",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "ejs": "^2.5.6",
+    "express": "^4.15.3",
+    "method-override": "^2.3.9",
+    "mongoose": "^4.10.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node app.js",
+    "test": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jo9043/homepage.git"
+  },
+  "keywords": [
+    "blog"
+  ],
+  "author": "jo9043@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jo9043/homepage/issues"
+  },
+  "homepage": "https://github.com/jo9043/homepage#readme"
+}
