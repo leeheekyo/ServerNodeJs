@@ -9,8 +9,6 @@
     "body-parser": "~1.14.2",
     "method-override": "^2.3.9",
     "mongoose": "^4.10.4",
-    "express-session": "~1.13.0",
-    "dateformat": "^1.0.12",
-    "querystring": "^0.2.1"
+    "express-session": "~1.13.0"
   }
 }
