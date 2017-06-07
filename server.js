@@ -29,7 +29,7 @@ db.open(function(err, db) {
   else console.log("db open");
 })*/
 
-
+/*
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://admin:admin@ds161001.mlab.com:61001/kyo');
 var db = mongoose.connection;
@@ -39,7 +39,7 @@ db.once("open",function(){
 db.on("error",function(err){
 	console.log("DB ERROR : ", err);
 });
-
+*/
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
