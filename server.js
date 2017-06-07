@@ -7,18 +7,13 @@ var fs = require("fs")
 var PORT = process.env.PORT || 3000;
 var dateFormat = require('dateformat');
 
+/*
 var MongoClient = require('mongodb').MongoClient;
 
 var Db = require('mongodb').Db,
-    Server = require('mongodb').Server,
-    ReplSetServers = require('mongodb').ReplSetServers,
-    ObjectID = require('mongodb').ObjectID,
-    Binary = require('mongodb').Binary,
-    GridStore = require('mongodb').GridStore,
-    Grid = require('mongodb').Grid,
-    Code = require('mongodb').Code,
     //BSON = require('mongodb').pure().BSON,
     assert = require('assert');
+*/
 
 //db value
 
