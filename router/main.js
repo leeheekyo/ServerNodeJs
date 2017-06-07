@@ -3,13 +3,13 @@ module.exports = function(app, fs)
 {
 
      app.get('/',function(req,res){
-         res.render('index', {
+         res.render('main', {
              length: 10
          })
      });
 
      app.get('/main',function(req,res){
-         res.render('index', {
+         res.render('main', {
              length: 10
          })
      });
@@ -24,7 +24,7 @@ module.exports = function(app, fs)
          res.render('board', {
              length: 10
          })
-
+/*
     fs.readFile('board_before', function(error,data_before){
         res.writeHead(200, {'Content-Type':'text/html'})
         
@@ -42,7 +42,7 @@ module.exports = function(app, fs)
                 newData=newData+"<tr><td>"+items[i]['id']+"</td><td>"+items[i]['title']+"</td><td>"+items[i]['day']+"</tr>";
             }
             data = data+newData+"</tbody></table></div><button type='button'' class='btn' onClick='addPage()'>새글 작성</button></div></div></div><script>function addPage(){ self.location='board_add.html';}</script>";
-            
+*/            
             res.end(data);
             
             
