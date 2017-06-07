@@ -26,6 +26,18 @@ module.exports = function(app, fs)
          })
      });
 
+     app.get('/board_add',function(req,res){
+         res.render('board_add', {
+             length: 10
+         })
+     });
+
+     app.get('/QnA_add',function(req,res){
+         res.render('QnA_add', {
+             length: 10
+         })
+     });
+
      app.get('/board',function(req,res){
          res.render('board', {
              length: 10
@@ -63,114 +75,197 @@ module.exports = function(app, fs)
         }
     });
 
+}
 
 /*
-    app.get('/list', function (req, res) {
-       fs.readFile( __dirname + "/../data/user.json", 'utf8', function (err, data) {
-           console.log( data );
-           res.end( data );
-       });
+app.get('/board_add.html', function(req, res){
+    fs.readFile('views/board_add.html', function(error,data){
+        res.writeHead(200, {'Content-Type':'text/html'})
+        res.end(data);
     });
-
-    app.get('/getUser/:username', function(req, res){
-       fs.readFile( __dirname + "/../data/user.json", 'utf8', function (err, data) {
-            var users = JSON.parse(data);
-            res.json(users[req.params.username]);
-       });
-    });
-
-    app.post('/addUser/:username', function(req, res){
-
-        var result = {  };
-        var username = req.params.username;
-
-        // CHECK REQ VALIDITY
-        if(!req.body["password"] || !req.body["name"]){
-            result["success"] = 0;
-            result["error"] = "invalid request";
-            res.json(result);
-            return;
-        }
-
-        // LOAD DATA & CHECK DUPLICATION
-        fs.readFile( __dirname + "/../data/user.json", 'utf8',  function(err, data){
-            var users = JSON.parse(data);
-            if(users[username]){
-                // DUPLICATION FOUND
-                result["success"] = 0;
-                result["error"] = "duplicate";
-                res.json(result);
-                return;
+});
+app.get('/board.html', function(req, res){
+    fs.readFile('views/board_before.html', function(error,data_before){
+        res.writeHead(200, {'Content-Type':'text/html'})
+        
+        //find DB and show
+        var collection = db.collection("board");
+        var data = data_before;
+        collection.find().toArray(function(err, items) {
+            assert.equal(null, err);
+            //console.log(items[0]);
+            var count = items.length;
+            var i=0;
+            var newData="";
+            
+            for(; i<count; i=i+1){
+                newData=newData+"<tr><td>"+items[i]['id']+"</td><td>"+items[i]['title']+"</td><td>"+items[i]['day']+"</tr>";
             }
-
-            // ADD TO DATA
-            users[username] = req.body;
-
-            // SAVE DATA
-            fs.writeFile(__dirname + "/../data/user.json",
-                         JSON.stringify(users, null, '\t'), "utf8", function(err, data){
-                result = {"success": 1};
-                res.json(result);
-            })
+            data = data+newData+"</tbody></table></div><button type='button'' class='btn' onClick='addPage()'>새글 작성</button></div></div></div><footer class='container-fluid text-center'><p>Kyo World</p></footer><script>function addPage(){ self.location='board_add.html';}</script></body></html>";
+            
+            res.end(data);
+            
+            
+            //db.close();
         })
+        
     });
-
-
-    app.put('/mergeUser/:username', function(req, res){
-
-        var result = {  };
-        var username = req.params.username;
-
-        // CHECK REQ VALIDITY
-        if(!req.body["password"] || !req.body["name"]){
-            result["success"] = 0;
-            result["error"] = "invalid request";
-            res.json(result);
-            return;
-        }
-
-        // LOAD DATA
-        fs.readFile( __dirname + "/../data/user.json", 'utf8',  function(err, data){
-            var users = JSON.parse(data);
-            // ADD/MODIFY DATA
-            users[username] = req.body;
-
-            // SAVE DATA
-            fs.writeFile(__dirname + "/../data/user.json",
-                         JSON.stringify(users, null, '\t'), "utf8", function(err, data){
-                result = {"success": 1};
-                res.json(result);
-            })
-        })
+});
+app.get('/QnA_add.html', function(req, res){
+    fs.readFile('views/QnA_add.html', function(error,data){
+        res.writeHead(200, {'Content-Type':'text/html'})
+        res.end(data);
     });
-
-
-    app.delete('/deleteUser/:username', function(req, res){
-        var result = { };
-        //LOAD DATA
-        fs.readFile(__dirname + "/../data/user.json", "utf8", function(err, data){
-            var users = JSON.parse(data);
-
-            // IF NOT FOUND
-            if(!users[req.params.username]){
-                result["success"] = 0;
-                result["error"] = "not found";
-                res.json(result);
-                return;
+});
+app.get('/QnA.html', function(req, res){
+    fs.readFile('views/QnA_before.html', function(error,data_before){
+        res.writeHead(200, {'Content-Type':'text/html'})
+        
+        //find DB and show.
+        var collection = db.collection("QnA");
+        var data = data_before;
+        collection.find().toArray(function(err, items) {
+            assert.equal(null, err);
+            //console.log(items[0]);
+            var count = items.length;
+            var i=0;
+            var newData="";
+            
+            for(; i<count; i=i+1){
+                newData=newData+"<tr><td>"+items[i]['id']+"</td><td>"+items[i]['title']+"</td><td>"+items[i]['day']+"</tr>";
             }
-
-            // DELETE FROM DATA
-            delete users[req.params.username];
-
-            // SAVE FILE
-            fs.writeFile(__dirname + "/../data/user.json",
-                         JSON.stringify(users, null, '\t'), "utf8", function(err, data){
-                result["success"] = 1;
-                res.json(result);
-                return;
-            })
+            data = data+newData+"</tbody></table></div><button type='button'' class='btn' onClick='addPage()'>QnA 작성</button></div></div></div><footer class='container-fluid text-center'><p>Kyo World</p></footer><script>function addPage(){ self.location='QnA_add.html';}</script></body></html>";
+            
+            res.end(data);
         })
+        
+    });
+});
+app.get('/admin.html', function(req, res){
+    fs.readFile('views/admin.html', function(error,data){
+        res.writeHead(200, {'Content-Type':'text/html'})
+        res.end(data);
+    });
+});
+app.get('/login.html', function(req, res){
+    fs.readFile('views/login.html', function(error,data){
+        res.writeHead(200, {'Content-Type':'text/html'})
+        res.end(data);
+    });
+});
+app.get('/profile.html', function(req, res){
+    fs.readFile('views/profile.html', function(error,data){
+        res.writeHead(200, {'Content-Type':'text/html'})
+        res.end(data);
+    });
+});
+app.get('/QnA.html', function(req, res){
+    fs.readFile('views/QnA.html', function(error,data){
+        res.writeHead(200, {'Content-Type':'text/html'})
+        res.end(data);
+    });
+});
+app.post('/loginok', function(req, res) {
+    //post parameter passing
+    if(req.method =='POST') { 
+        req.on('data', function(chunk) {
+            console.log(chunk.toString()); 
+            var data = querystring.parse(chunk.toString()); 
+            res.writeHead(200, {'Content-Type':'text/html'}); 
+            
+            
+            //check id and password
+        var query = { id: data.id, pw : data.pw };
+        db.collection("user").find(query).toArray(function(err, result) {
+            if (err) throw err;
+            console.log(result);
+            
+            if(result=="") res.end("login fail");
+            else {
+                res.end("login success <script>self.location='/';</script>");
+                
+            }
+        });
+            
+            
+            
+        }); 
+    }
 
-    })*/
+});
+app.post('/board_add_ok', function(req, res) {
+    
+if(req.method =='POST') { 
+    req.on('data', function(chunk) { 
+        console.log(chunk.toString());
+        
+        
+        
+        var data = querystring.parse(chunk.toString()); 
+        res.writeHead(200, {'Content-Type':'text/html'}); 
+        
+        //calculate id
+        var query = {  };
+        var boardCount = 0;
+        db.collection("board").find(query).toArray(function(err, result) {
+            if (err) throw err;
+            console.log(result);
+            boardCount=result[result.length-1].id;
+            console.log(boardCount);
+        });
+        boardCount+=1;
+        
+        //calculate date
+        var date=dateFormat(result.request_date, "yyyy-mm-dd");
+        console.log('[' + date + '] ' + '현재 시간')
 
+        //insert board
+        var myobj = { id:boardCount, title: data.title, body: data.body, day : date };
+        db.collection("board").insertOne(myobj, function(err, res) {
+            if (err) throw err;
+            console.log("1 record inserted");
+            //db.close();
+        });
+        
+        res.end('title : ' + data.title + ',body : ' + data.body); 
+    });
 }
+});
+app.post('/QnA_add_ok', function(req, res) {
+
+if(req.method =='POST') { 
+    req.on('data', function(chunk) { 
+        console.log(chunk.toString());
+        
+        
+        
+        var data = querystring.parse(chunk.toString()); 
+        res.writeHead(200, {'Content-Type':'text/html'}); 
+        
+        //calculate id
+        var query = {  };
+        var boardCount = 0;
+        db.collection("QnA").find(query).toArray(function(err, result) {
+            if (err) throw err;
+            console.log(result);
+            boardCount=result[result.length-1].id;
+            console.log(boardCount);
+        });
+        boardCount+=1;
+        
+        //calculate date
+        var date=dateFormat(result.request_date, "yyyy-mm-dd");
+        console.log('[' + date + '] ' + '현재 시간')
+
+        //insert QnA
+        var myobj = { id:boardCount, title: data.title, body: data.body, day : date };
+        db.collection("QnA").insertOne(myobj, function(err, res) {
+            if (err) throw err;
+            console.log("1 record inserted");
+            //db.close();
+        });
+        
+        res.end('title : ' + data.title + ',body : ' + data.body); 
+    });
+}
+});*/
