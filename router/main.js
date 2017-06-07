@@ -4,11 +4,26 @@ module.exports = function(app, fs)
 
      app.get('/',function(req,res){
          res.render('index', {
-             title: "Kyo 2",
+             title: "Kyo World",
              length: 5
          })
      });
 
+     app.get('/main',function(req,res){
+         res.render('index', {
+             title: "Kyo World",
+             length: 5
+         })
+     });
+
+     app.get('/profile',function(req,res){
+         res.render('profile', {
+             title: "Kyo World",
+             length: 5
+         })
+     });
+
+/*
     app.get('/list', function (req, res) {
        fs.readFile( __dirname + "/../data/user.json", 'utf8', function (err, data) {
            console.log( data );
@@ -115,6 +130,6 @@ module.exports = function(app, fs)
             })
         })
 
-    })
+    })*/
 
 }
