@@ -59,7 +59,7 @@ app.get('/board_add.html', function(req, res){
         res.writeHead(200, {'Content-Type':'text/html'})
         res.end(data);
     });
-});
+});/*
 app.get('/board.html', function(req, res){
     fs.readFile('views/board_before.html', function(error,data_before){
         res.writeHead(200, {'Content-Type':'text/html'})
@@ -80,12 +80,6 @@ app.get('/board.html', function(req, res){
             data = data+newData+"</tbody></table></div><button type='button'' class='btn' onClick='addPage()'>새글 작성</button></div></div></div><footer class='container-fluid text-center'><p>Kyo World</p></footer><script>function addPage(){ self.location='board_add.html';}</script></body></html>";
             
             res.end(data);
-            /*
-            items.forEach(function(item){
-                var adddata =
-                console.log(adddata);
-                data = data+adddata;
-            })*/
             
             
             //db.close();
@@ -98,7 +92,7 @@ app.get('/QnA_add.html', function(req, res){
         res.writeHead(200, {'Content-Type':'text/html'})
         res.end(data);
     });
-});/*
+});
 app.get('/QnA.html', function(req, res){
     fs.readFile('views/QnA_before.html', function(error,data_before){
         res.writeHead(200, {'Content-Type':'text/html'})
