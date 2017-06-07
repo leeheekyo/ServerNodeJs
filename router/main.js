@@ -4,7 +4,7 @@ module.exports = function(app, fs)
 
      app.get('/',function(req,res){
          res.render('index', {
-             title: "Kyo",
+             title: "Kyo World",
              length: 5
          })
      });
