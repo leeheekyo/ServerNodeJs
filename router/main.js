@@ -38,6 +38,31 @@ module.exports = function(app, fs)
          })
      });
 
+    app.post('/loginok', function(req, res) {
+        //post parameter passing
+        if(req.method =='POST') { 
+            req.on('data', function(chunk) {
+                console.log(chunk.toString()); 
+                var data = querystring.parse(chunk.toString()); 
+                res.writeHead(200, {'Content-Type':'text/html'}); 
+                
+                
+                //check id and password
+            var query = { id: data.id, pw : data.pw };
+            db.collection("user").find(query).toArray(function(err, result) {
+                if (err) throw err;
+                console.log(result);
+                
+                if(result=="") res.end("login fail");
+                else {
+                    res.end("login success <script>self.location='/';</script>");
+                    
+                }
+            });   
+            }); 
+        }
+    });
+
 
 /*
     app.get('/list', function (req, res) {
