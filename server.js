@@ -7,8 +7,8 @@ var PORT = process.env.PORT || 3000;
 
 var mongoose = require('mongoose');
 
-var dateFormat = require('dateformat');
-var querystring = require('querystring');
+//var dateFormat = require('dateformat');
+//var querystring = require('querystring');
 
 mongoose.connect('mongodb://admin:admin@ds161001.mlab.com:61001/kyo');
 var db = mongoose.connection;
