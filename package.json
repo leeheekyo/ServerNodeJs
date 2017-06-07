@@ -1,6 +1,7 @@
 {
-  "name": "heroku1",
+  "name": "leeheekyo",
   "version": "1.0.0",
+  "author": "glhk5895@naver.com",
   "dependencies":
   {
     "express": "~4.13.1",
