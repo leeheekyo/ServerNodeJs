@@ -10,6 +10,6 @@
     "method-override": "^2.3.9",
     "mongoose": "^4.10.4",
     "express-session": "~1.13.0",
-    "dateformat": "5.1.0"
+    "dateformat": "^1.0.12"
   }
 }
