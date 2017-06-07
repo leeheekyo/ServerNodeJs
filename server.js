@@ -5,8 +5,11 @@ var session = require('express-session');
 var fs = require("fs");
 var PORT = process.env.PORT || 3000;
 
-
 var mongoose = require('mongoose');
+
+var querystring = require('querystring');
+var dateFormat = require('dateformat');
+var MongoClient = require('mongodb').MongoClient;
 
 mongoose.connect('mongodb://admin:admin@ds161001.mlab.com:61001/kyo');
 var db = mongoose.connection;
@@ -18,9 +21,6 @@ db.on("error",function(err){
 });
 
 /*
-var querystring = require('querystring');
-var dateFormat = require('dateformat');
-var MongoClient = require('mongodb').MongoClient;
 
 var Db = require('mongodb').Db,
     //BSON = require('mongodb').pure().BSON,
