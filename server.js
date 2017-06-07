@@ -30,7 +30,7 @@ db.open(function(err, db) {
   else console.log("db open");
 })*/
 
-
+/*
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://admin:admin@ds161001.mlab.com:61001/kyo');
 var db = mongoose.connection;
@@ -40,7 +40,7 @@ db.once("open",function(){
 db.on("error",function(err){
 	console.log("DB ERROR : ", err);
 });
-
+*/
 
 app.get('/', function(req, res){
     fs.readFile('views/main.html', function(error,data){
@@ -98,7 +98,7 @@ app.get('/QnA_add.html', function(req, res){
         res.writeHead(200, {'Content-Type':'text/html'})
         res.end(data);
     });
-});
+});/*
 app.get('/QnA.html', function(req, res){
     fs.readFile('views/QnA_before.html', function(error,data_before){
         res.writeHead(200, {'Content-Type':'text/html'})
@@ -148,12 +148,6 @@ app.get('/QnA.html', function(req, res){
     });
 });
 app.post('/loginok', function(req, res) {
-    /*if(req.method == 'GET') { 
-        fs.readFile('./docRoot/form.html', function(err, data) { 
-            res.writeHead(200, {'Content-Type':'text/html'}); 
-            res.end(data); 
-        }); 
-    }*/
     //post parameter passing
     if(req.method =='POST') { 
         req.on('data', function(chunk) {
@@ -161,13 +155,6 @@ app.post('/loginok', function(req, res) {
             var data = querystring.parse(chunk.toString()); 
             res.writeHead(200, {'Content-Type':'text/html'}); 
             
-            /*
-            var myobj = { name: "Company Inc", address: "Highway 37" };
-                db.collection("customers").insertOne(myobj, function(err, res) {
-                if (err) throw err;
-                console.log("1 record inserted");
-                db.close();
-            });*/
             
             //check id and password
         var query = { id: data.id, pw : data.pw };
@@ -263,7 +250,7 @@ if(req.method =='POST') {
         res.end('title : ' + data.title + ',body : ' + data.body); 
     });
 }
-});
+});*/
 
 app.listen(PORT, function(){
     console.log("server Start.")
