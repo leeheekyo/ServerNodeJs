@@ -4,22 +4,19 @@ module.exports = function(app, fs)
 
      app.get('/',function(req,res){
          res.render('index', {
-             title: "Kyo World",
-             length: 5
+             length: 10
          })
      });
 
      app.get('/main',function(req,res){
          res.render('index', {
-             title: "Kyo World",
-             length: 5
+             length: 10
          })
      });
 
      app.get('/profile',function(req,res){
          res.render('profile', {
-             title: "Kyo World",
-             length: 5
+             length: 10
          })
      });
 
