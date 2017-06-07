@@ -1,11 +1,15 @@
 {
-  "name": "restful",
+  "name": "mongoose",
   "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "test": "node app.js"
+  },
+  "author": "sungsoo.eun@posgen.net",
+  "license": "ISC",
   "dependencies": {
-    "body-parser": "~1.14.2",
-    "ejs": "~2.4.1",
-    "express": "~4.13.1",
-    "express-session": "~1.13.0",
-    "mongoose": "^4.10.4"
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "mongoose": "^4.9.4"
   }
 }
