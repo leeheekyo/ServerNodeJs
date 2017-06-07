@@ -32,7 +32,7 @@ db.open(function(err, db) {
 
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://user:1234@ds161001.mlab.com:61001/kyo');
+mongoose.connect('mongodb://admin:admin@ds161001.mlab.com:61001/kyo');
 var db = mongoose.connection;
 db.once("open",function(){
 	console.log("DB connected!");
