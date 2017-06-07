@@ -20,38 +20,18 @@ module.exports = function(app, fs)
          })
      });
 
+     app.get('/login',function(req,res){
+         res.render('login', {
+             length: 10
+         })
+     });
+
      app.get('/board',function(req,res){
          res.render('board', {
              length: 10
          })
-/*
-    fs.readFile('board_before', function(error,data_before){
-        res.writeHead(200, {'Content-Type':'text/html'})
-        
-        //find DB and show
-        var collection = db.collection("board");
-        var data = data_before;
-        collection.find().toArray(function(err, items) {
-            assert.equal(null, err);
-            //console.log(items[0]);
-            var count = items.length;
-            var i=0;
-            var newData="";
-            
-            for(; i<count; i=i+1){
-                newData=newData+"<tr><td>"+items[i]['id']+"</td><td>"+items[i]['title']+"</td><td>"+items[i]['day']+"</tr>";
-            }
-            data = data+newData+"</tbody></table></div><button type='button'' class='btn' onClick='addPage()'>새글 작성</button></div></div></div><script>function addPage(){ self.location='board_add.html';}</script>";
-*/            
-            res.end(data);
-            
-            
-            //db.close();
-        })
-        
-    });
-
      });
+
 
 /*
     app.get('/list', function (req, res) {
