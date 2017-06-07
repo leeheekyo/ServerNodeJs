@@ -5,10 +5,10 @@ var session = require('express-session');
 var fs = require("fs");
 var PORT = process.env.PORT || 3000;
 
-var mongoose = require('mongoose');
+//var mongoose = require('mongoose');
 
 //var querystring = require('querystring');
-
+/*
 mongoose.connect('mongodb://admin:admin@ds161001.mlab.com:61001/kyo');
 var db = mongoose.connection;
 db.once("open",function(){
@@ -16,7 +16,7 @@ db.once("open",function(){
 });
 db.on("error",function(err){
 	console.log("DB ERROR : ", err);
-});
+});*/
 
 /*
 var dateFormat = require('dateformat');
