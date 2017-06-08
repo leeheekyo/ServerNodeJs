@@ -8,8 +8,7 @@
     "express": "^4.15.3",
     "method-override": "^2.3.9",
     "mongoose": "^4.10.4",
-    "express-session": "~1.13.0",
-    "dateformat": "^5.0.1"
+    "express-session": "~1.13.0"
   }, 
   "engines": { "node": "4.4.x", "npm": "5.0.x" }
 }
