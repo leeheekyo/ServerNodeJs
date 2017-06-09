@@ -1,4 +1,7 @@
 // module.exports 는 모듈을 생성하는 부분으로 다른 파일에서 require 할 수 있다.
+
+var User = require('./user.js');
+
 module.exports = function(app, fs)
 {
 
@@ -52,6 +55,17 @@ module.exports = function(app, fs)
 
     app.post('/loginok', function(req, res) {
         //post parameter passing
+        console.log(req.body);
+        
+        User.find({ id: req.body.id, pw:req.body.pw }, function(err, user) {
+            if(user != ""){
+                res.end("<script>self.location='/'</script>")
+            }
+            else{
+                res.end("There is no Information. Please retry it.");
+            }
+          });
+        /*
         if(req.method =='POST') { 
             req.on('data', function(chunk) {
                 console.log(chunk.toString()); 
@@ -72,7 +86,7 @@ module.exports = function(app, fs)
                 }
             });   
             }); 
-        }
+        }*/
     });
 
 }
