@@ -17,6 +17,12 @@ module.exports = function(app, fs)
          })
      });
 
+     app.get('/paint',function(req,res){
+         res.render('paint', {
+             length: 10
+         })
+     });
+
      app.get('/profile',function(req,res){
          res.render('profile', {
              length: 10

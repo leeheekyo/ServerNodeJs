@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+<head>
+<title>kyo</title>
+<style>
+button{
+	background: linear-gradient(to bottom, red, black);
+	margin-bottom : 5px;
+	width:100px;
+	color:white;
+}
+</style>
+</head>
+<body oncontextmenu="return false">
+<div id="div_top"><h1 style="text-align:center">2D Simple Graphic Editor</h1><div>
+<div id="div_body" style="width:650px; height:500px; border:3px solid">
+<br />
+<div id="div_left" style="float:left">
+<button onclick="start(0)">선분</button><br /> 
+<button onclick="start(1)">원</button> <br />
+<button onclick="start(2)">사각형</button><br />
+<button onclick="start(3)">다각형</button><br />
+<button onclick="start(4)">곡선</button> <br />
+<button onclick="change()">색채우기</button><br />
+<input type="button" id="mybgcolor" style="width:20px; height:20px; background-color:black; margin-top:5px; margin-left:10px; margin-bottom:3px" /> <br />
+<input type="button" style="width:20px; height:20px; background-color:black" onclick="bgcolor('black')" />
+<input type="button" style="width:20px; height:20px; background-color:orange" onclick="bgcolor('orange')" />
+<input type="button" style="width:20px; height:20px; background-color:green" onclick="bgcolor('green')" /> <br />
+<input type="button" style="width:20px; height:20px; background-color:blue" onclick="bgcolor('blue')" />
+<input type="button" style="width:20px; height:20px; background-color:red" onclick="bgcolor('red')" />
+<input type="button" style="width:20px; height:20px; background-color:purple" onclick="bgcolor('purple')" /> <br />
+<button onclick="fileopen()" style="margin-top:10px">패턴</button><input type="file" id="pic" style="width:100px; background-color:linear-gradient(to bottom, red, white); " hidden></input> <br />
+<p style="margin-top:5px">선색<input type="button" id="mylinecolor" style="width:20px; height:20px; background-color:black; margin-top:5px; margin-bottom:3px" /> <br />
+<input type="button" style="width:20px; height:20px; background-color:black" onclick="licolor('black')" />
+<input type="button" style="width:20px; height:20px; background-color:orange" onclick="licolor('orange')" />
+<input type="button" style="width:20px; height:20px; background-color:green" onclick="licolor('green')" /> <br />
+<input type="button" style="width:20px; height:20px; background-color:blue" onclick="licolor('blue')" />
+<input type="button" style="width:20px; height:20px; background-color:red" onclick="licolor('red')" />
+<input type="button" style="width:20px; height:20px; background-color:purple" onclick="licolor('purple')" /> <br /></p>
+<p style="margin-top:5px; margin-bottom:3px">선굵기<br />
+<canvas id='line1' width="60" height="12" onclick="line(1)"><script> var canvas = document.getElementById('line1'); var con = canvas.getContext('2d'); con.beginPath(); con.moveTo(0, 5); con.lineTo(60, 5); con.lineWidth=1; con.stroke(); con.closePath(); </script></canvas> <br />
+<canvas id='line2' width="60" height="12" onclick="line(4)"><script>var canvas = document.getElementById('line2'); var con = canvas.getContext('2d'); con.beginPath(); con.moveTo(0, 5); con.lineTo(60, 5); con.lineWidth=4; con.stroke(); con.closePath();</script></canvas> <br />
+<canvas id='line3' width="60" height="12" onclick="line(7)"><script>var canvas = document.getElementById('line3'); var con = canvas.getContext('2d'); con.beginPath(); con.moveTo(0, 5); con.lineTo(60, 5); con.lineWidth=7; con.stroke(); con.closePath();</script></canvas> <br />
+<canvas id='line4' width="60" height="12" onclick="line(10)"><script>var canvas = document.getElementById('line4'); var con = canvas.getContext('2d'); con.beginPath(); con.moveTo(0, 5); con.lineTo(60, 5); con.lineWidth=10; con.stroke(); con.closePath();</script></canvas> </p>
+</div>
+<div id="div_right" style="float:left">
+<canvas id="drawCanvas" width="500" height="420" onmousedown="myFunction(0)" onmouseup="myFunction(1)" oncontextmenu="myFunction(2)" style= "background:white; border:5px solid;">
+</canvas><br />
+<button onclick="fload()" style="margin-left:120px;background: linear-gradient(to bottom, green, black)">불러오기</button>
+<input type="file" id="fsave" hidden>
+<button onclick="fsave()" style="margin-left:50px;background: linear-gradient(to bottom, green, black)">저 장</button>
+<input type="file" id="fload" hidden>
+<script type="text/javascript">
+var canvas = document.getElementById('drawCanvas');
+var context = canvas.getContext('2d');
+var buttonClicked=0;
+var x,y,x2,y2,x3,y3, initx, inity;
+var sig, sig2=0;
+var mylinecolor = 'black';
+var mybgcolor = 'black';
+var mylinesize = 1;
+var change_val = 0;
+var shape=[];
+var polxs=[];
+var polys=[];
+var count;
+var counts=0;
+
+function change(){ change_val=1; };
+function fileopen(){
+	sig2=1;
+	document.getElementById('pic').click();
+}
+function fsave(){
+	var textToSave = shape.toString();
+    var textToSaveAsBlob = new Blob([textToSave], {type:"text/plain"});
+    var textToSaveAsURL = window.URL.createObjectURL(textToSaveAsBlob);
+    var fileNameToSaveAs = prompt("Please enter file name","Paint");
+ 
+    var downloadLink = document.createElement("a");
+    downloadLink.download = fileNameToSaveAs;
+    downloadLink.innerHTML = "Download File";
+    downloadLink.href = textToSaveAsURL;
+    downloadLink.onclick = destroyClickedElement;
+    downloadLink.style.display = "none";
+    document.body.appendChild(downloadLink);
+ 
+    downloadLink.click();
+}
+function destroyClickedElement(event)
+{
+    document.body.removeChild(event.target);
+}
+function fload(){
+	var fl = document.getElementById('fload');
+	fl.click();
+	fl.onchange = function(){
+		var file = this.files[0];
+
+  		var reader = new FileReader();
+  		reader.onload = function(progressEvent){
+    		//alert(this.result);
+    		shape=[];
+    		counts=0;
+
+
+    		var lines = this.result.split(',');
+    		if(lines.length<1){
+    			alert("해당 파일을 열 수 없습니다. html파일과 같은 위치에 배치해 주세요.");
+    		}
+    		for(var line = 0; line < lines.length; line++){
+      			var obj = lines[line].split(' ');
+      			if(obj[0]=='l'){
+      				var l = {
+						x1 : obj[3],
+						y1 : obj[4],
+						x2 : obj[5],
+						y2 : obj[6],
+						lc : obj[1],
+						lw : obj[2],
+						toString : function(){
+							return "l "+this.lc+" "+this.lw+" "+ this.x1 + " " + this.y1 + " " + this.x2 + " " + this.y2+" ";
+						}
+					}
+					shape.push(l);
+					context.beginPath();
+					context.strokeStyle=l.lc;
+					context.lineWidth=l.lw;
+					context.moveTo(l.x1, l.y1);
+					context.lineTo(l.x2, l.y2);
+					context.stroke();
+					context.closePath();
+				}else if(obj[0]=='e'){
+      				var e = {
+						x : obj[4],
+						y : obj[5],
+						rx : obj[6],
+						ry : obj[7],
+						lc : obj[1],
+						lw : obj[2],
+						bg : obj[3],
+						toString : function(){
+							return "e "+this.lc+" "+this.lw+" "+this.bg+" "+ this.x +" "+this.y+" "+this.rx+" "+this.ry+" ";
+						}
+					}
+					shape.push(e);
+					context.beginPath();
+					context.strokeStyle=e.lc;
+					context.lineWidth=e.lw;
+
+					if(e.bg.split('.').length>1){
+						alert("상대 경로로 읽어 오기 때문에 html과 같은 위치에 그림파일을 배치해 주세요.");
+						var imageObj = new Image();
+						imageObj.src = e.bg;
+						imageObj.onload = function(){
+							context.ellipse(e.x, e.y, e.rx,e.ry, 0,0,2*Math.PI, false);
+							context.stroke();
+							context.clip();
+							imageObj.onload = function(){
+								var pattern = context.createPattern(imageObj, 'repeat');
+								context.fillStyle=pattern;
+								context.fillRect(e.x-e.rx,e.y-e.ry,2*e.rx, 2*e.ry);
+							}
+						}
+					}else{
+						context.fillStyle=e.bg;
+						context.ellipse(e.x, e.y, e.rx,e.ry, 0,0,2*Math.PI, false);
+					}
+					context.fill();
+					context.stroke();
+					context.closePath();
+				}else if(obj[0]=='r'){
+      				var r = {
+						x1 : obj[4],
+						y1 : obj[5],
+						x2 : obj[6],
+						y2 : obj[7],
+						lc : obj[1],
+						lw : obj[2],
+						bg : obj[3],
+						toString : function(){
+							return "r "+this.lc+" "+this.lw+" "+this.bg+" "+ this.x1+" "+this.y1+" "+this.x2+" "+this.y2+" ";
+						}
+					}
+					shape.push(r);
+					context.beginPath();
+					context.strokeStyle=r.lc;
+					context.lineWidth=r.lw;
+					if(r.bg.split('.').length>1){
+						alert("상대 경로로 읽어 오기 때문에 html과 같은 위치에 그림파일을 배치해 주세요.");
+						var imageObj = new Image();
+						imageObj.src = r.bg;
+						imageObj.onload = function(){
+							var pattern = context.createPattern(imageObj, 'repeat');
+							context.rect(r.x1,r.y1,r.x2, r.y2);
+							context.fillStyle=pattern;
+							context.fill();
+						}
+					}else{
+						context.fillStyle=r.bg;
+						context.fillRect(r.x1, r.y1, r.x2, r.y2);
+					}
+					context.strokeRect(r.x1, r.y1, r.x2, r.y2);
+					context.stroke();
+					context.closePath();
+      			}else if(obj[0]=='s'){
+      				var size = (obj.length-4)/2;
+      				var i;
+      				polxs[counts]=[];
+      				polys[counts]=[];
+					context.strokeStyle=obj[1];
+					context.lineWidth=obj[2];
+
+					context.beginPath();
+					
+      				polxs[counts].push(obj[3]);
+      				polys[counts].push(obj[4]);
+					for(i=1; i<size; i++){
+      					polxs[counts].push(obj[2*i+3]);
+      					polys[counts].push(obj[2*i+4]);
+      					context.moveTo(obj[2*i+1],obj[2*i+2]);
+      					context.lineTo(obj[2*i+3],obj[2*i+4]);
+      				}
+      				context.moveTo(obj[2*i+1],obj[2*i+2]);
+      				context.lineTo(obj[3],obj[4]);
+      				var pol ={
+						x : polxs[counts],
+						y : polys[counts],
+						c : count,
+						lc : mylinecolor,
+						lw : mylinesize,
+						toString : function(){
+							var i;
+							var s="s "+this.lc+" "+this.lw+" ";
+							for(i=0;i<this.c;i++) s+=this.x[i] +" "+this.y[i]+" ";
+							return s;
+						}
+					}
+					counts+=1;
+					shape.push(pol);
+
+					context.stroke();
+					context.closePath();
+      				counts+=1;
+      			}else if(obj[0]=='c'){
+					var curve={
+						x1 : obj[3],
+						y1 : obj[4],
+						x2 : obj[5],
+						y2 : obj[6],
+						x3 : obj[7],
+						y3 : obj[8],
+						x4 : obj[9],
+						y4 : obj[10],
+						lc : obj[1],
+						lw : obj[2],
+						toString : function(){
+							return "c "+this.lc+" "+this.lw+" "+ this.x1+" "+this.y1+" "+this.x2+" "+this.y2+" "+this.x3+" "+this.y3+" "+this.x4+" "+this.y4+" ";
+						}
+					}
+					shape.push(curve);
+
+					context.beginPath();
+					context.strokeStyle=obj[1];
+					context.lineWidth=obj[2];
+					context.moveTo(obj[3], obj[4]);
+					context.bezierCurveTo(obj[5], obj[6],obj[7], obj[8],obj[9],obj[10]);
+					context.stroke();
+					context.closePath();
+      			}
+    		}
+  		};
+  		reader.readAsText(file);
+
+
+		context.beginPath();
+		context.rect(0, 0, 500, 420);
+		context.fillStyle='white';
+		context.fill();
+		context.strokeSytle="white";
+		context.strok();
+		context.closePath();
+    };
+}
+function line(val){
+	if(change_val!=0){
+		mylinesize=val;
+		var canvas1 = document.getElementById('line1');
+		var canvas2 = document.getElementById('line2');
+		var canvas3 = document.getElementById('line3');
+		var canvas4 = document.getElementById('line4');
+		if(mylinesize == 1){
+			canvas1.style.backgroundColor='gray';
+			canvas2.style.backgroundColor='white';
+			canvas3.style.backgroundColor='white';
+			canvas4.style.backgroundColor='white';
+		}else if(mylinesize==4){
+			canvas1.style.backgroundColor='white';
+			canvas2.style.backgroundColor='gray';
+			canvas3.style.backgroundColor='white';
+			canvas4.style.backgroundColor='white';
+		}else if(mylinesize==7){
+			canvas1.style.backgroundColor='white';
+			canvas2.style.backgroundColor='white';
+			canvas3.style.backgroundColor='gray';
+			canvas4.style.backgroundColor='white';
+		}else if(mylinesize==10){
+			canvas1.style.backgroundColor='white';
+			canvas2.style.backgroundColor='white';
+			canvas3.style.backgroundColor='white';
+			canvas4.style.backgroundColor='gray';
+		}
+	}
+}
+function bgcolor(val){
+	if(change_val!=0){
+		document.getElementById("mybgcolor").style.backgroundColor=val;
+		mybgcolor=val;
+		sig2=0;
+	}
+}
+function licolor(val){
+	if(change_val!=0){
+		document.getElementById("mylinecolor").style.backgroundColor=val;
+		mylinecolor=val;
+	}
+}
+function start(val){
+	if(val==1000){
+		sig2=1;
+		alert(document.getElementById("pic").value());
+	}else {
+		sig = val;
+	}
+	buttonClicked=1;
+	canvas.addEventListener('click',handleMouseClickEvent, false);
+}
+function myFunction(val){
+	if(buttonClicked==0) reutrn;
+	var mousePos = getMousePos(canvas, event);
+	
+	if(val == 0){
+		if(sig==3) return; 
+		x = mousePos.x;
+		y = mousePos.y;
+	}else if(val == 1){ 
+		context.beginPath();
+		context.strokeStyle=mylinecolor;
+		context.fillStyle=mybgcolor;
+		context.lineWidth=mylinesize;
+
+		if(sig==0){//line
+			context.moveTo(x, y);
+			context.lineTo(mousePos.x, mousePos.y);
+			context.stroke();
+			buttonClicked=0;
+			var l = {
+				x1 : x,
+				y1 : y,
+				x2 : mousePos.x,
+				y2 : mousePos.y,
+				lc : mylinecolor,
+				lw : mylinesize,
+				toString : function(){
+					return "l "+this.lc+" "+this.lw+" "+ this.x1 + " " + this.y1 + " " + this.x2 + " " + this.y2+" ";
+				}
+			}
+			shape.push(l);
+		}else if(sig==1){//ellipse
+			if(sig2==1){
+				alert("상대 경로로 읽어 오기 때문에 html과 같은 위치에 그림파일을 배치해 주세요.");
+				var imageObj = new Image();
+				imageObj.src = document.getElementById('pic').value.match(/[^\/\\]+$/);
+				imageObj.onload = function(){
+					context.ellipse((x+mousePos.x)/2, (y+mousePos.y)/2, (mousePos.x-x)/2,(mousePos.y-y)/2, 0,0,2*Math.PI, false);
+					context.stroke();
+					context.clip();
+					var imageObj = new Image();
+					imageObj.src = document.getElementById('pic').value.match(/[^\/\\]+$/); //only file name
+					imageObj.onload = function(){
+						var pattern = context.createPattern(imageObj, 'repeat');
+						context.fillStyle=pattern;
+						context.fillRect(x,y,mousePos.x-x, mousePos.y-y);
+					}
+				}
+				var e = {
+					x : (x+mousePos.x)/2,
+					y : (y+mousePos.y)/2,
+					rx : (mousePos.x-x)/2,
+					ry : (mousePos.y-y)/2,
+					lc : mylinecolor,
+					lw : mylinesize,
+					bg : document.getElementById('pic').value.match(/[^\/\\]+$/),
+					toString : function(){
+						return "e "+this.lc+" "+this.lw+" "+this.bg+" "+ this.x +" "+this.y+" "+this.rx+" "+this.ry+" ";
+					}
+				}
+				shape.push(e);
+			}else{
+				context.ellipse((x+mousePos.x)/2, (y+mousePos.y)/2, (mousePos.x-x)/2,(mousePos.y-y)/2, 0,0,2*Math.PI, false);
+				var e = {
+					x : (x+mousePos.x)/2,
+					y : (y+mousePos.y)/2,
+					rx : (mousePos.x-x)/2,
+					ry : (mousePos.y-y)/2,
+					lc : mylinecolor,
+					lw : mylinesize,
+					bg : mybgcolor,
+					toString : function(){
+						return "e "+this.lc+" "+this.lw+" "+this.bg+" "+ this.x +" "+this.y+" "+this.rx+" "+this.ry+" ";
+					}
+				}
+				shape.push(e);
+			}
+			
+			context.stroke();
+			context.fill();
+
+			buttonClicked=0;
+		}else if(sig==2){ //rectangle
+			if(sig2==1){
+				alert("상대 경로로 읽어 오기 때문에 html과 같은 위치에 그림파일을 배치해 주세요.");
+				var imageObj = new Image();
+				imageObj.src = document.getElementById('pic').value.match(/[^\/\\]+$/); //only fil name
+				imageObj.onload = function(){
+					var pattern = context.createPattern(imageObj, 'repeat');
+					context.rect(x,y,mousePos.x-x, mousePos.y-y);
+					context.fillStyle=pattern;
+					context.fill();
+				}
+				var r = {
+					x1 : x,
+					y1 : y,
+					x2 : mousePos.x-x,
+					y2 : mousePos.y-y,
+					lc : mylinecolor,
+					lw : mylinesize,
+					bg : document.getElementById('pic').value.match(/[^\/\\]+$/),
+					toString : function(){
+						return "r "+this.lc+" "+this.lw+" "+this.bg+" "+ this.x1+" "+this.y1+" "+this.x2+" "+this.y2+" ";
+					}
+				}
+				shape.push(r);
+			}else{
+				context.fillRect(x, y, mousePos.x-x, mousePos.y-y);
+				var r = {
+					x1 : x,
+					y1 : y,
+					x2 : mousePos.x-x,
+					y2 : mousePos.y-y,
+					lc : mylinecolor,
+					lw : mylinesize,
+					bg : mybgcolor,
+					toString : function(){
+						return "r "+this.lc+" "+this.lw+" "+this.bg+" "+ this.x1+" "+this.y1+" "+this.x2+" "+this.y2+" ";
+					}
+				}
+				shape.push(r);
+			}
+			context.strokeRect(x, y, mousePos.x-x, mousePos.y-y);
+			context.stroke();
+			context.closePath();
+			buttonClicked=0;
+		}else if(sig==3){ //polygon
+			buttonClicked += 1;
+			if(buttonClicked == 2){
+				polxs[counts]=[];
+				polys[counts]=[];
+				count=0;
+				initx=x = mousePos.x;
+				inity=y = mousePos.y;
+			}else if(buttonClicked > 2){
+				context.moveTo(x, y);
+				context.lineTo(mousePos.x, mousePos.y);
+				context.stroke();
+				x = mousePos.x;
+				y = mousePos.y;
+			}
+			polxs[counts].push(x);
+			polys[counts].push(y);
+			count+=1;
+		}else if(sig==4){ //curves
+			buttonClicked+=1;
+			if(buttonClicked==2){
+				initx=mousePos.x;
+				inity=mousePos.y;
+			}else if(buttonClicked==3){
+				x2=mousePos.x;
+				y2=mousePos.y;
+			}else if(buttonClicked==4){
+				x3=mousePos.x;
+				y3=mousePos.y;
+			}else if(buttonClicked==5){
+				context.moveTo(initx,inity);
+				context.bezierCurveTo(x2,y2,x3,y3,mousePos.x,mousePos.y);
+				context.stroke();
+				sig=-1;
+				buttonClicked=0;
+				var curve={
+					x1 : initx,
+					y1 : inity,
+					x2 : x2,
+					y2 : y2,
+					x3 : x3,
+					y3 : y3,
+					x4 : mousePos.x,
+					y4 : mousePos.y,
+					lc : mylinecolor,
+					lw : mylinesize,
+					toString : function(){
+						return "c "+this.lc+" "+this.lw+" "+ this.x1+" "+this.y1+" "+this.x2+" "+this.y2+" "+this.x3+" "+this.y3+" "+this.x4+" "+this.y4+" ";
+					}
+				}
+				shape.push(curve);
+			}
+		}
+		context.closePath();
+	}else if(val==2){
+		context.strokeStyle=mylinecolor;
+		context.fillStyle=mybgcolor;
+		context.lineWidth=mylinesize;
+		if(sig==3){
+			context.moveTo(initx,inity);
+			context.lineTo(mousePos.x,mousePos.y);
+			context.moveTo(x,y);
+			context.lineTo(mousePos.x,mousePos.y);
+			context.stroke();
+			context.closePath();
+			polxs[counts].push(mousePos.x);
+			polys[counts].push(mousePos.y);
+			sig=-1;
+			buttonClicked=0;
+			var pol ={
+				x : polxs[counts],
+				y : polys[counts],
+				c : count,
+				lc : mylinecolor,
+				lw : mylinesize,
+				toString : function(){
+					var i;
+					var s="s "+this.lc+" "+this.lw+" ";
+					for(i=0;i<this.c;i++) s+=this.x[i] +" "+this.y[i]+" ";
+					return s;
+				}
+			}
+			counts+=1;
+			shape.push(pol);
+		}
+	}
+}
+function getMousePos(canvas, evt) {
+	var rect = canvas.getBoundingClientRect();
+	return {
+		x: evt.clientX - rect.left,
+		y: evt.clientY - rect.top
+	};
+}
+</script>
+</div>
+</body>
+</html>
